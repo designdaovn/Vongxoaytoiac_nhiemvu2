@@ -1913,35 +1913,39 @@
       if (isLocked()) return;
 
       const docName = e.currentTarget.dataset.name_display || e.currentTarget.textContent.replace('↗', '').trim();
-
-      // Thử load ảnh — nếu có thì mở tab mới, nếu không thì popup thông báo
       const imgUrl = DOC_IMAGE_BASE + encodeURIComponent(docName) + '.jpg';
-      const testImg = new Image();
-      testImg.onload = function() {
-        window.open(imgUrl, '_blank', 'noopener');
 
-        // Xác định đây có phải đáp án đúng không
-        const normName = normalizeLabel(docName);
-        const correctQ2 = Q2_CORRECT.has(normName);
-        const correctQ4 = Q4_CORRECT.has(normName);
-        injectDocToQuiz(docName, correctQ2, correctQ4);
+      // Dùng fetch HEAD để kiểm tra file có tồn tại không
+      fetch(imgUrl, { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            // File tồn tại → tạo thẻ <a> và click để mở tab mới (không bị popup blocker)
+            const a = document.createElement('a');
+            a.href = imgUrl;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
 
-        // Nếu vừa mở "Lê Thu Thảo" → mở khoá và hiện "Lê Khả Hân" trong panel
-        openedDocs.add(normName);
-        if (normName === 'hồ sơ cá nhân lê thu thảo') {
-          unlockLeKhaHan();
-        }
+            const normName = normalizeLabel(docName);
+            injectDocToQuiz(docName, Q2_CORRECT.has(normName), Q4_CORRECT.has(normName));
 
-        const secs = LOCK_DURATION[cap];
-        lockState = { unlocksAt: Date.now() + secs * 1000, cap };
-        applyLockState();
-        startCountdown();
-        document.getElementById('docPanel').classList.remove('is-open');
-      };
-      testImg.onerror = function() {
-        document.getElementById('overload-popup').style.display = 'flex';
-      };
-      testImg.src = imgUrl + '?t=' + Date.now();
+            openedDocs.add(normName);
+            if (normName === 'hồ sơ cá nhân lê thu thảo') unlockLeKhaHan();
+
+            const secs = LOCK_DURATION[cap];
+            lockState = { unlocksAt: Date.now() + secs * 1000, cap };
+            applyLockState();
+            startCountdown();
+            document.getElementById('docPanel').classList.remove('is-open');
+          } else {
+            document.getElementById('overload-popup').style.display = 'flex';
+          }
+        })
+        .catch(() => {
+          document.getElementById('overload-popup').style.display = 'flex';
+        });
     }
 
     // ── Mở khoá "Hồ sơ cá nhân Lê Khả Hân" sau khi mở Lê Thu Thảo ──
