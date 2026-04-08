@@ -391,6 +391,7 @@
     #result-img {
       display: none;
       animation: fadeSlideIn 0.6s ease forwards;
+      width: 100%;
     }
 
     .result-card {
@@ -400,6 +401,7 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 0 60px rgba(235,209,30,0.12), 0 20px 60px rgba(0,0,0,0.8);
+      border-top: none; /* banner ở trên thay thế */
     }
 
     .result-card::before {
@@ -529,7 +531,7 @@
     .result-nav {
       display: flex;
       gap: 12px;
-      padding: 24px 28px 28px;
+      padding: 20px 24px 24px;
     }
 
     .btn-nav {
@@ -792,13 +794,73 @@
       .fab-group { bottom: 14px; right: 14px; }
     }
 
-    /* Responsive */
-    @media (max-width: 500px) {
-      .card { padding: 24px 18px 28px; }
-      h2 { font-size: 20px; }
-      .popup-body { padding: 18px 20px 24px; }
-      .result-nav { flex-direction: column; padding: 18px 18px 24px; }
+    /* ══════════════════════════════════════
+       RESPONSIVE — MOBILE
+    ══════════════════════════════════════ */
+    @media (max-width: 600px) {
+      body { padding: 16px 12px 80px; align-items: flex-start; }
+
+      /* Card quiz */
+      .card { padding: 20px 16px 24px; }
+      h2 { font-size: 19px; }
+      .subtitle { font-size: 14px; }
+
+      /* Câu hỏi */
+      .answers label { font-size: 14.5px; padding: 11px 12px; gap: 10px; }
+
+      /* Popup */
+      .popup-content { width: 94%; }
+      .popup-body { padding: 16px 18px 22px; }
+      .popup-title { font-size: 17px; }
+      .popup-msg { font-size: 14px; }
+
+      /* Result */
+      #result-img { width: 100%; }
+      .result-nav {
+        flex-direction: column;
+        padding: 16px 16px 20px;
+        gap: 10px;
+      }
+      .btn-nav { padding: 12px 14px; }
+      .btn-back .nav-title,
+      .btn-next .nav-title { font-size: 13px; }
+
+      /* Music player */
       .music-player { top: 10px; right: 10px; }
+
+      /* FAB */
+      .fab-group { bottom: 14px; right: 14px; }
+      .fab-group-left { bottom: 14px; left: 14px; }
+      .fab-btn { width: 40px; height: 40px; }
+      .fab-btn svg { width: 18px; height: 18px; }
+
+      /* Doc panel */
+      .doc-panel { width: 270px; }
+
+      /* Tutorial popup */
+      .tutorial-content { margin: 0 8px; }
+      .tutorial-header { padding: 16px 20px 12px; }
+      .tutorial-title { font-size: 16px; }
+      .tutorial-body { padding: 12px 20px 6px; }
+      .tutorial-row { gap: 12px; padding: 10px 0; }
+      .tutorial-icon-wrap { width: 36px; height: 36px; }
+      .tutorial-icon-wrap svg { width: 17px; height: 17px; }
+      .tutorial-desc-text { font-size: 13px; }
+      .tutorial-note { margin: 6px 20px 18px; }
+      .tutorial-close-wrap { padding: 0 20px 20px; }
+      .tutorial-close-btn { font-size: 12px; padding: 10px 24px; }
+
+      /* Case banner */
+      .case-banner { clip-path: none; padding: 8px 14px; }
+      .case-banner .badge,
+      .case-banner .case-id { font-size: 9px; letter-spacing: 1px; }
+    }
+
+    /* Tablet */
+    @media (min-width: 601px) and (max-width: 768px) {
+      body { padding: 20px 16px 60px; }
+      .card { padding: 28px 28px 32px; }
+      .result-nav { padding: 16px 20px 20px; }
     }
 
     /* Mobile/touch: panel nhạc luôn thu gọn, chỉ hiện nút play/pause */
@@ -1023,8 +1085,7 @@
     .doc-locked-banner.visible { display: flex; }
 
     @media (max-width: 500px) {
-      .fab-group-left { bottom: 14px; left: 14px; }
-      .doc-panel { width: 260px; }
+      /* already handled in main responsive block above */
     }
 
     /* ---- POPUP HƯỚNG DẪN ---- */
@@ -1384,18 +1445,17 @@
     </div>
 
     <!-- ====== RESULT ====== -->
-    <div id="result-img">
+    <div id="result-img" style="width:100%; max-width:720px; margin:0 auto;">
       <div class="case-banner">
         <span class="badge">✔ KẾT QUẢ PHÂN TÍCH</span>
         <span class="case-id">MÃ VỤ ÁN: #VN-0048</span>
       </div>
       <div class="card result-card">
-        <img id="result-image" src="" alt="Kết quả">
+        <img id="result-image" src="" alt="Kết quả" style="width:100%;height:auto;display:block;">
 
         <!-- ── Nút điều hướng ── -->
         <div class="result-nav">
 
-          <!-- [QUAY LẠI] Hiện lại trang câu hỏi, reset toàn bộ checkbox -->
           <button class="btn-nav btn-back" onclick="goBack()">
             <span class="nav-arrow">←</span>
             <span class="nav-text">
@@ -1404,10 +1464,6 @@
             </span>
           </button>
 
-          <!-- ══════════════════════════════════════════════
-               [TIẾP TỤC] ← ĐIỀN LINK TRANG TIẾP THEO VÀO
-               biến NEXT_PAGE_URL bên dưới trong thẻ <script>
-               ══════════════════════════════════════════════ -->
           <button class="btn-nav btn-next" onclick="goNext()">
             <span class="nav-text">
               <span class="nav-title">TIẾP TỤC</span>
@@ -1915,37 +1971,51 @@
       const docName = e.currentTarget.dataset.name_display || e.currentTarget.textContent.replace('↗', '').trim();
       const imgUrl = DOC_IMAGE_BASE + encodeURIComponent(docName) + '.jpg';
 
-      // Dùng fetch HEAD để kiểm tra file có tồn tại không
-      fetch(imgUrl, { method: 'HEAD' })
-        .then(res => {
-          if (res.ok) {
-            // File tồn tại → tạo thẻ <a> và click để mở tab mới (không bị popup blocker)
-            const a = document.createElement('a');
-            a.href = imgUrl;
-            a.target = '_blank';
-            a.rel = 'noopener';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+      // Mở tab mới ngay trong luồng click — không bị popup blocker
+      // Tab sẽ hiển thị ảnh nếu có, hoặc tự hiện thông báo lỗi nếu không có
+      const html = `<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${docName}</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#111; display:flex; align-items:center; justify-content:center; min-height:100vh; font-family:Georgia,serif; }
+    img { max-width:100%; max-height:100vh; object-fit:contain; display:block; }
+    .error { text-align:center; color:#f5f0e8; padding:40px; }
+    .error h2 { color:#ebd11e; font-size:22px; margin-bottom:16px; letter-spacing:2px; }
+    .error p { color:rgba(245,240,232,0.6); font-style:italic; font-size:16px; line-height:1.7; }
+    .error .icon { font-size:48px; margin-bottom:20px; }
+  </style>
+</head>
+<body>
+  <img src="${imgUrl}" alt="${docName}"
+    onerror="this.style.display='none'; document.getElementById('err').style.display='block'">
+  <div id="err" style="display:none" class="error">
+    <div class="icon">⚠️</div>
+    <h2>KẾT NỐI THẤT BẠI</h2>
+    <p>Hiện tại lượng truy cập vào cơ sở dữ liệu<br>của công an tỉnh Triều Sơn quá lớn,<br>vui lòng thử lại sau hoặc tìm tài liệu khác.</p>
+  </div>
+</body>
+</html>`;
 
-            const normName = normalizeLabel(docName);
-            injectDocToQuiz(docName, Q2_CORRECT.has(normName), Q4_CORRECT.has(normName));
+      const blob = new Blob([html], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, '_blank');
 
-            openedDocs.add(normName);
-            if (normName === 'hồ sơ cá nhân lê thu thảo') unlockLeKhaHan();
+      // Xử lý phía game (inject vào câu hỏi, khoá, mở Lê Khả Hân...)
+      const normName = normalizeLabel(docName);
+      injectDocToQuiz(docName, Q2_CORRECT.has(normName), Q4_CORRECT.has(normName));
 
-            const secs = LOCK_DURATION[cap];
-            lockState = { unlocksAt: Date.now() + secs * 1000, cap };
-            applyLockState();
-            startCountdown();
-            document.getElementById('docPanel').classList.remove('is-open');
-          } else {
-            document.getElementById('overload-popup').style.display = 'flex';
-          }
-        })
-        .catch(() => {
-          document.getElementById('overload-popup').style.display = 'flex';
-        });
+      openedDocs.add(normName);
+      if (normName === 'hồ sơ cá nhân lê thu thảo') unlockLeKhaHan();
+
+      const secs = LOCK_DURATION[cap];
+      lockState = { unlocksAt: Date.now() + secs * 1000, cap };
+      applyLockState();
+      startCountdown();
+      document.getElementById('docPanel').classList.remove('is-open');
     }
 
     // ── Mở khoá "Hồ sơ cá nhân Lê Khả Hân" sau khi mở Lê Thu Thảo ──
