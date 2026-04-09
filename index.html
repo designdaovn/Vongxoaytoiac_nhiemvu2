@@ -76,6 +76,7 @@
       z-index: 2;
       width: 100%;
       max-width: 720px;
+      flex-shrink: 0;
       animation: fadeSlideIn 0.8s ease forwards;
     }
 
@@ -394,6 +395,10 @@
       width: 100%;
     }
 
+    #quiz {
+      width: 100%;
+    }
+
     .result-card {
       background: var(--dark2);
       border: 2px solid var(--gold);
@@ -401,7 +406,6 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 0 60px rgba(235,209,30,0.12), 0 20px 60px rgba(0,0,0,0.8);
-      border-top: none; /* banner ở trên thay thế */
     }
 
     .result-card::before {
@@ -531,7 +535,7 @@
     .result-nav {
       display: flex;
       gap: 12px;
-      padding: 20px 24px 24px;
+      padding: 24px 28px 28px;
     }
 
     .btn-nav {
@@ -794,73 +798,15 @@
       .fab-group { bottom: 14px; right: 14px; }
     }
 
-    /* ══════════════════════════════════════
-       RESPONSIVE — MOBILE
-    ══════════════════════════════════════ */
-    @media (max-width: 600px) {
-      body { padding: 16px 12px 80px; align-items: flex-start; }
-
-      /* Card quiz */
-      .card { padding: 20px 16px 24px; }
-      h2 { font-size: 19px; }
-      .subtitle { font-size: 14px; }
-
-      /* Câu hỏi */
-      .answers label { font-size: 14.5px; padding: 11px 12px; gap: 10px; }
-
-      /* Popup */
-      .popup-content { width: 94%; }
-      .popup-body { padding: 16px 18px 22px; }
-      .popup-title { font-size: 17px; }
-      .popup-msg { font-size: 14px; }
-
-      /* Result */
-      #result-img { width: 100%; }
-      .result-nav {
-        flex-direction: column;
-        padding: 16px 16px 20px;
-        gap: 10px;
-      }
-      .btn-nav { padding: 12px 14px; }
-      .btn-back .nav-title,
-      .btn-next .nav-title { font-size: 13px; }
-
-      /* Music player */
+    /* Responsive */
+    @media (max-width: 500px) {
+      .card { padding: 24px 18px 28px; }
+      h2 { font-size: 20px; }
+      .popup-body { padding: 18px 20px 24px; }
+      .result-nav { flex-direction: column; padding: 18px 18px 24px; }
       .music-player { top: 10px; right: 10px; }
-
-      /* FAB */
-      .fab-group { bottom: 14px; right: 14px; }
       .fab-group-left { bottom: 14px; left: 14px; }
-      .fab-btn { width: 40px; height: 40px; }
-      .fab-btn svg { width: 18px; height: 18px; }
-
-      /* Doc panel */
-      .doc-panel { width: 270px; }
-
-      /* Tutorial popup */
-      .tutorial-content { margin: 0 8px; }
-      .tutorial-header { padding: 16px 20px 12px; }
-      .tutorial-title { font-size: 16px; }
-      .tutorial-body { padding: 12px 20px 6px; }
-      .tutorial-row { gap: 12px; padding: 10px 0; }
-      .tutorial-icon-wrap { width: 36px; height: 36px; }
-      .tutorial-icon-wrap svg { width: 17px; height: 17px; }
-      .tutorial-desc-text { font-size: 13px; }
-      .tutorial-note { margin: 6px 20px 18px; }
-      .tutorial-close-wrap { padding: 0 20px 20px; }
-      .tutorial-close-btn { font-size: 12px; padding: 10px 24px; }
-
-      /* Case banner */
-      .case-banner { clip-path: none; padding: 8px 14px; }
-      .case-banner .badge,
-      .case-banner .case-id { font-size: 9px; letter-spacing: 1px; }
-    }
-
-    /* Tablet */
-    @media (min-width: 601px) and (max-width: 768px) {
-      body { padding: 20px 16px 60px; }
-      .card { padding: 28px 28px 32px; }
-      .result-nav { padding: 16px 20px 20px; }
+      .doc-panel { width: 260px; }
     }
 
     /* Mobile/touch: panel nhạc luôn thu gọn, chỉ hiện nút play/pause */
@@ -1084,9 +1030,7 @@
     }
     .doc-locked-banner.visible { display: flex; }
 
-    @media (max-width: 500px) {
-      /* already handled in main responsive block above */
-    }
+
 
     /* ---- POPUP HƯỚNG DẪN ---- */
     .tutorial-popup {
@@ -1444,18 +1388,18 @@
       </div>
     </div>
 
-    <!-- ====== RESULT ====== -->
-    <div id="result-img" style="width:100%; max-width:720px; margin:0 auto;">
+  </div><!-- /.case-file -->
+
+  <!-- ====== RESULT ====== -->
+  <div id="result-img" style="display:none; position:fixed; inset:0; z-index:500; overflow-y:auto; background:var(--dark3); padding:30px 16px;">
+    <div style="width:100%; max-width:720px; margin:0 auto;">
       <div class="case-banner">
         <span class="badge">✔ KẾT QUẢ PHÂN TÍCH</span>
-        <span class="case-id">MÃ VỤ ÁN: D-14032014</span>
+        <span class="case-id">MÃ VỤ ÁN: #VN-0048</span>
       </div>
       <div class="card result-card">
         <img id="result-image" src="" alt="Kết quả" style="width:100%;height:auto;display:block;">
-
-        <!-- ── Nút điều hướng ── -->
         <div class="result-nav">
-
           <button class="btn-nav btn-back" onclick="goBack()">
             <span class="nav-arrow">←</span>
             <span class="nav-text">
@@ -1463,7 +1407,6 @@
               <span class="nav-sub">Thử lại từ đầu</span>
             </span>
           </button>
-
           <button class="btn-nav btn-next" onclick="goNext()">
             <span class="nav-text">
               <span class="nav-title">TIẾP TỤC</span>
@@ -1471,14 +1414,10 @@
             </span>
             <span class="nav-arrow">→</span>
           </button>
-
         </div>
-        <!-- ── /Nút điều hướng ── -->
-
       </div>
     </div>
-
-  </div><!-- /.case-file -->
+  </div>
 
 
   <!-- ====== POPUP SAI ====== -->
@@ -1627,7 +1566,6 @@
         const { correct, wrong } = countCorrectSelected('q4', Q4_CORRECT);
         // Cần ít nhất 2 đúng và không chọn sai
         if (correct >= 2 && wrong === 0) {
-          document.getElementById('quiz').style.display = 'none';
           document.getElementById('result-img').style.display = 'block';
           document.getElementById('result-image').src =
             "https://raw.githubusercontent.com/designdaovn/Hosomat-acgiaacbao/refs/heads/main/Giai%20thich%20copy.jpg";
@@ -1667,7 +1605,6 @@
       document.getElementById('q4-block').style.display = 'none';
       document.querySelector('.btn-submit').textContent = 'XÁC NHẬN PHÂN TÍCH';
       document.getElementById('result-img').style.display = 'none';
-      document.getElementById('quiz').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1910,9 +1847,11 @@
       { cap: 1, name: "Hồ sơ cá nhân Trần Thị Mai Anh",             url: "#" },
       { cap: 1, name: "Hồ sơ cá nhân Trần Văn Tính",                url: "#" },
       { cap: 1, name: "Hồ sơ cá nhân Lê Nhật Hoàng",                url: "#" },
+      { cap: 1, name: "Hồ sơ cá nhân Trần Thị Huế",                 url: "#" },
       { cap: 1, name: "Hồ sơ cá nhân Lê Hoàng Minh Hằng",          url: "#" },
+      { cap: 1, name: "Thông tin các tuyến xe bus - camera xe bus",  url: "#" },
       { cap: 1, name: "Danh sách học sinh",                           url: "#" },
-      { cap: 1, name: "Ảnh hiện trường vụ nổ Khí Ga (bổ sung)", url: "#" },
+      { cap: 1, name: "Ảnh hiện trường bổ sung - ngôi nhà gỗ (cột điện, hộp điện)", url: "#" },
 
       // ── CẤP 2 (khoá 10 phút) ────────────────────────────────────
       { cap: 2, name: "Danh sách người trả lời Phỏng vấn trên báo", url: "#" },
@@ -1924,14 +1863,10 @@
       { cap: 2, name: "Hồ sơ cá nhân - Đại úy Vũ Thu Thảo",        url: "#" },
       { cap: 2, name: "Hồ sơ cá nhân - Trung úy Tạ Quang Nam",      url: "#" },
       { cap: 2, name: "Hồ sơ cá nhân - Trung úy Trần Thế Nam",      url: "#" },
-      { cap: 2, name: "Hỏi về thông tin sợi dây chuyền của Minh Châu",      url: "#" },
-      { cap: 2, name: "Định vị điện thoại Lê Khả Hân",      url: "#" },
 
       // ── CẤP 3 (khoá 30 phút) ────────────────────────────────────
       { cap: 3, name: "Hồ sơ cá nhân - Thiếu Tá Lý Hoàng Trung",   url: "#" },
       { cap: 3, name: "Hồ sơ cá nhân - Đại Tá Lê Vũ Nam",          url: "#" },
-      { cap: 3, name: "Gọi Hồn Phạm Minh Châu",          url: "#" },
-      
     ];
 
     // Thời gian khoá theo cấp (giây)
